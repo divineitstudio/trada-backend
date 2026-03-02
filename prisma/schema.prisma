@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  username      String        @unique
+  email         String        @unique
+  password_hash String
+  created_at    DateTime      @default(now())
+  
+  // Relationship for Favorite Symbol
+  fav_symbol_id Int?
+  favorite      Symbol?       @relation(fields: [fav_symbol_id], references: [id])
+
+  // Other Relations
+  chat_histories ChatHistory[]
+  informations   Information[]
+}
+
+model Symbol {
+  id        Int      @id @default(autoincrement())
+  ticker    String   @unique
+  name      String?
+  category  String?  // Crypto, Forex, Stock
+  icon      String?
+
+  // Relations
+  prices           Price[]
+  market_analytics MarketAnalytics[]
+  favorited_by     User[]
+}
+
+model Price {
+  id         String   @id @default(uuid())
+  symbol_id  Int
+  interval   String   // '1m', '5m', '1h', '1d'
+  price      Decimal  @db.Decimal(20, 8)
+  timestamp  DateTime @default(now())
+
+  symbol     Symbol   @relation(fields: [symbol_id], references: [id], onDelete: Cascade)
+
+  @@index([symbol_id, interval, timestamp])
+}
+
+model MarketAnalytics {
+  id              Int      @id @default(autoincrement())
+  symbol_id       Int
+  price_usd       Decimal? @db.Decimal(20, 8)
+  price_idr       Decimal? @db.Decimal(20, 2)
+  pct_change_1h   Decimal? @db.Decimal(10, 2)
+  point_change_1h Decimal? @db.Decimal(20, 8)
+  ema_20          Decimal? @db.Decimal(20, 8)
+  ema_50          Decimal? @db.Decimal(20, 8)
+  ema_100         Decimal? @db.Decimal(20, 8)
+  ema_200         Decimal? @db.Decimal(20, 8)
+  trend_status    String?  // uptrend, downtrend, neutral
+  updated_at      DateTime @updatedAt
+
+  symbol          Symbol   @relation(fields: [symbol_id], references: [id], onDelete: Cascade)
+}
+
+model Information {
+  id         Int       @id @default(autoincrement())
+  sender_id  Int?
+  title      String
+  body       String    @db.Text
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  sender     User?     @relation(fields: [sender_id], references: [id])
+}
+
+model ChatHistory {
+  id         String   @id @default(uuid())
+  user_id    Int
+  sender     String   // system, user, gemini
+  title      String?
+  body       String   @db.Text
+  created_at DateTime @default(now())
+
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
