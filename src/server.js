@@ -1,6 +1,7 @@
 import app from './app.js';
 import prisma from './config/prisma.js';
-import { startJobSet } from './jobs/priceJob.js';
+import priceJob  from './jobs/priceJob.js';
+import indicatorJob from './jobs/indocatorJob.js';
 
 const PORT = process.env.PORT || 3000;
 
@@ -10,7 +11,8 @@ async function startServer() {
     await prisma.$connect();
     console.log('✔ Database connected successfully');
     //2.  Job set
-    startJobSet();
+    priceJob.start();
+    indicatorJob.start();
 
     // 3. Jalankan server
     app.listen(PORT, () => {

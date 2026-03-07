@@ -45,7 +45,7 @@ model Symbol {
 
 model Price {
   id         String   @id @default(uuid())
-  symbol_id  Int
+  symbol_id  Int      
   interval   String   // '1m', '5m', '1h', '1d'
   price      Decimal  @db.Decimal(20, 8)
   timestamp  DateTime @default(now())
@@ -57,7 +57,7 @@ model Price {
 
 model MarketAnalytics {
   id              Int      @id @default(autoincrement())
-  symbol_id       Int
+  symbol_id       Int      @unique
   price_usd       Decimal? @db.Decimal(20, 8)
   price_idr       Decimal? @db.Decimal(20, 2)
   pct_change_1h   Decimal? @db.Decimal(10, 2)
