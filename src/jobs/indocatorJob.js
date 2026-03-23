@@ -91,5 +91,6 @@ const updateMarketAnalytics = async () => {
   }
 };
 
-const marketAnalyticsJob = cron.schedule('*/10 * * * *', updateMarketAnalytics);
+// const marketAnalyticsJob = cron.schedule('*/10 * * * *', updateMarketAnalytics);
+const marketAnalyticsJob = console.log('This Feature is under maintenance.');
 export default marketAnalyticsJob;

@@ -28,6 +28,7 @@ model User {
   // Other Relations
   chat_histories ChatHistory[]
   informations   Information[]
+  signals        Signal[]
 }
 
 model Symbol {
@@ -41,6 +42,7 @@ model Symbol {
   prices           Price[]
   market_analytics MarketAnalytics[]
   favorited_by     User[]
+  // signals          Signal[]
 }
 
 model Price {
@@ -92,4 +94,20 @@ model ChatHistory {
   created_at DateTime @default(now())
 
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Signal {
+  id         Int       @id @default(autoincrement())
+  // symbol_id  Int
+  symbol     String
+  sender_id  Int?
+  type       String    // Long, Short
+  entry_price Decimal   @db.Decimal(20, 8)
+  sl_price    Decimal   @db.Decimal(20, 8)
+  tp_price    Decimal   @db.Decimal(20, 8)
+  status     String    // active, running, cancelled, profit, loss
+  created_at DateTime  @default(now())
+
+  // symbol          Symbol   @relation(fields: [symbol_id], references: [id], onDelete: Cascade)
+  sender     User?     @relation(fields: [sender_id], references: [id])
 }

@@ -69,6 +69,7 @@ const fetchPrices = async () => {
 };
 
 // Running tiap 1 menit
-const priceJob = cron.schedule('* * * * *', fetchPrices);
+// const priceJob = cron.schedule('* * * * *', fetchPrices);
+const priceJob = console.log('This Feature is under maintenance.');
 
 export default priceJob;

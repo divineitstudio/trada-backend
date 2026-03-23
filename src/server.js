@@ -11,8 +11,8 @@ async function startServer() {
     await prisma.$connect();
     console.log('✔ Database connected successfully');
     //2.  Job set
-    priceJob.start();
-    indicatorJob.start();
+    // priceJob.start();
+    // indicatorJob.start();
 
     // 3. Jalankan server
     app.listen(PORT, () => {

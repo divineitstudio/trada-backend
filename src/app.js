@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import infoRoutes from './features/information/info.routes.js';
+import signalRoutes from './features/signal/signal.routes.js';
 
 // Import Middlewares & Routes
 import { errorHandler } from './middlewares/error.handler.js';
@@ -33,6 +34,7 @@ app.get('/health', (req, res) => {
 
 //Information Routes
 app.use('/information', infoRoutes);
+app.use('/signal', signalRoutes);
 // --- API Routes ---
 // app.use('/api/auth', authRoutes);
 // app.use('/api/market', marketRoutes);
