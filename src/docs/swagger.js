@@ -7,6 +7,10 @@ export const swaggerSpec = {
   },
   servers: [
     {
+      url: '/',
+      description: 'Current environment (auto-detected via Tunnel / Domain)',
+    },
+    {
       url: 'http://localhost:3000',
       description: 'Local development server',
     },
