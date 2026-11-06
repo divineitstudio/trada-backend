@@ -11,7 +11,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node prisma/seed.js",
-    "docker:build": "docker build -t ghcr.io/divineitstudio/trada:latest ."
+    "docker:build": "docker build -t ghcr.io/divineitstudio/trada-backend:latest ."
   },
   "prisma": {
     "seed": "node prisma/seed.js"
